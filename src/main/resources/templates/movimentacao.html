@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Movimentação</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Adicionar nova Movimentação</h1>
+        </header>
+
+        <main class="main-content">
+            <form id="form-movimentacao" th:action="@{/movimentacao}" method="post">
+                <div class="form-group">
+                    <label for="deposito">DEPOSITO:</label>
+                    <select id="deposito" name="deposito" required>
+                        <option value="" selected disabled>Selecione um depósito</option>
+                        <option th:each="deposito : ${depositos}"
+                                th:value="${deposito}"
+                                th:text="${deposito}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="produto">PRODUTO:</label>
+                    <select id="produto" name="produto" required disabled>
+                        <option value="" selected disabled>Primeiro selecione um depósito</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantidade">QUANTIDADE:</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">TIPO:</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="" selected disabled>Selecione o tipo</option>
+                        <option value="1">Entrada</option>
+                        <option value="0">Saída</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">ADICIONAR</button>
+                    <a id="btn-voltar" th:href="@{/}" class="btn btn-secondary">VOLTAR</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="/js/movimentacao.js"></script>
+</body>
+</html>

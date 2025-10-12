@@ -28,6 +28,10 @@ public class FornecedorProdutoDao extends BaseDAO<FornecedorProduto> {
     
     /* Função para excluir o relacionamento entre Fornecedor e Produto */
     public void excluirPorFornecedorEProduto(Integer fornecedorId, Integer produtoId) {
-        buscarPorFornecedorEProduto(fornecedorId, produtoId).ifPresent(this::delete);
+        Optional<FornecedorProduto> relacaoOpt = buscarPorFornecedorEProduto(fornecedorId, produtoId);
+        if (relacaoOpt.isPresent()) {
+            FornecedorProduto relacao = relacaoOpt.get();
+            delete(relacao.getId());
+        }
     }
 }

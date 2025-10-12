@@ -28,6 +28,10 @@ public class DepositoProdutoDao extends BaseDAO<DepositoProduto> {
     
     /* Função para excluir o relacionamento entre Deposito e Produto */
     public void excluirPorDepositoEProduto(Integer depositoId, Integer produtoId) {
-        buscarPorDepositoEProduto(depositoId, produtoId).ifPresent(this::delete);
+        Optional<DepositoProduto> relacaoOpt = buscarPorDepositoEProduto(depositoId, produtoId);
+        if (relacaoOpt.isPresent()) {
+            DepositoProduto relacao = relacaoOpt.get();
+            delete(relacao.getId());
+        }
     }
 }
