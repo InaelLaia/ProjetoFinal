@@ -1,40 +1,52 @@
 package br.com.senac.projeto.controller;
 
-import br.com.senac.projeto.persistencia.*;
+import br.com.senac.projeto.entity.FornecedorProduto;
+import br.com.senac.projeto.service.FornecedorService;
+import br.com.senac.projeto.service.ProdutoService;
+import br.com.senac.projeto.service.FornecedorProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 @Controller
+@RequestMapping("/fornecedor")
 public class FornecedorController {
     
-    private FornecedorDao fornecedorDao = new FornecedorDao();
-    private ProdutoDao produtoDao = new ProdutoDao();
-    private FornecedorProdutoDao fornecedorProdutoDao = new FornecedorProdutoDao();
+    @Autowired
+    private FornecedorService fornecedorService;
     
-    @GetMapping("/fornecedor")
-    public String fornecedor(Model model) {
-        model.addAttribute("fornecedores", fornecedorDao.listarNomes());
+    @Autowired
+    private ProdutoService produtoService;
+    
+    @Autowired
+    private FornecedorProdutoService fornecedorProdutoService;
+    
+    @GetMapping
+    public String fornecedorPage(Model model) {
+        model.addAttribute("fornecedores", fornecedorService.listarNomesFornecedores());
         return "fornecedor";
     }
     
-    @PostMapping("/fornecedor/adicionar")
+    @PostMapping("/adicionar")
     public String adicionarProdutoFornecedor(
             @RequestParam("fornecedor") String nomeFornecedor,
             @RequestParam("produto") String nomeProduto) {
         
         try {
-            Integer fornecedorId = fornecedorDao.obterIdPorNome(nomeFornecedor);
-            Integer produtoId = produtoDao.obterIdPorNome(nomeProduto);
+            Integer fornecedorId = fornecedorService.obterIdPorNome(nomeFornecedor);
+            Integer produtoId = produtoService.obterIdPorNome(nomeProduto);
             
-            FornecedorProduto relacao = new FornecedorProduto();
-            relacao.setFornecedorId(fornecedorId);
-            relacao.setProdutoId(produtoId);
+            if (fornecedorProdutoService.existeRelacionamento(fornecedorId, produtoId)) {
+                System.err.println("Relacionamento já existe: " + nomeFornecedor + " - " + nomeProduto);
+                return "redirect:/fornecedor";
+            }
             
-            fornecedorProdutoDao.save(relacao);
+            FornecedorProduto relacao = new FornecedorProduto(fornecedorId, produtoId);
+            fornecedorProdutoService.save(relacao);
+            
+            System.out.println("Produto adicionado com sucesso ao fornecedor: " + nomeFornecedor + " - " + nomeProduto);
             
         } catch (Exception e) {
             System.err.println("Erro ao adicionar produto ao fornecedor: " + e.getMessage());
@@ -44,7 +56,7 @@ public class FornecedorController {
         return "redirect:/fornecedor";
     }
     
-    @PostMapping("/fornecedor/excluir")
+    @PostMapping("/excluir")
     @ResponseBody
     public ResponseEntity<String> excluirProdutoFornecedor(
             @RequestParam("fornecedor") String nomeFornecedor,
@@ -53,12 +65,12 @@ public class FornecedorController {
         try {
             System.out.println("Tentando excluir produto: " + nomeProduto + " do fornecedor: " + nomeFornecedor);
             
-            Integer fornecedorId = fornecedorDao.obterIdPorNome(nomeFornecedor);
-            Integer produtoId = produtoDao.obterIdPorNome(nomeProduto);
+            Integer fornecedorId = fornecedorService.obterIdPorNome(nomeFornecedor);
+            Integer produtoId = produtoService.obterIdPorNome(nomeProduto);
             
             System.out.println("IDs encontrados - Fornecedor: " + fornecedorId + ", Produto: " + produtoId);
             
-            fornecedorProdutoDao.excluirPorFornecedorEProduto(fornecedorId, produtoId);
+            fornecedorProdutoService.excluirPorFornecedorEProduto(fornecedorId, produtoId);
             
             System.out.println("Exclusão realizada com sucesso");
             return ResponseEntity.ok("Produto excluído com sucesso");

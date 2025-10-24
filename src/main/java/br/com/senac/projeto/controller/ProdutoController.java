@@ -1,42 +1,42 @@
 package br.com.senac.projeto.controller;
 
-import br.com.senac.projeto.persistencia.Produto;
-import br.com.senac.projeto.persistencia.ProdutoDao;
+import br.com.senac.projeto.entity.Produto;
+import br.com.senac.projeto.service.ProdutoService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/produto")
 public class ProdutoController {
     
-    private ProdutoDao produtoDao = new ProdutoDao();
+    @Autowired
+    private ProdutoService produtoService;
     
-    @GetMapping("/produto")
-    public String produto() {
+    @GetMapping
+    public String produtoForm(Model model) {
+        model.addAttribute("produto", new Produto());
         return "produto";
     }
     
-    @PostMapping("/produto")
-    public String salvarProduto(
-            @RequestParam("nome") String nome,
-            @RequestParam("marca") String marca,
-            @RequestParam("preco") Double preco) {
-        
-        try {
-            Produto produto = new Produto();
-            produto.setNome(nome);
-            produto.setMarca(marca);
-            produto.setPreco(preco);
-            
-            produtoDao.save(produto);
-            
-        } catch (Exception e) {
-            System.err.println("Erro ao salvar produto: " + e.getMessage());
-            e.printStackTrace();
+    @PostMapping
+    public String salvarProduto(@Valid @ModelAttribute("produto") Produto produto, 
+                               BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "produto";
         }
         
-        return "redirect:/";
+        try {
+            produtoService.salvarProduto(produto);
+            model.addAttribute("success", "Produto cadastrado com sucesso!");
+            return "produto";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erro ao cadastrar produto: " + e.getMessage());
+            return "produto";
+        }
     }
+    
 }

@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td style="color: ${precisaReposicao ? 'red' : 'black'}">${quantidadeAtual}</td>
                         `;
                         
-                        // Armazena os dados da linha para verificação
                         row.dataset.nome = nome;
                         row.dataset.quantidade = quantidadeAtual;
                         
