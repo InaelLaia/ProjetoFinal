@@ -16,7 +16,7 @@ Fazer o clone do repositório na sua máquina local.
 1. Executar os scripts de sql localizados no caminho "Controle-Loja-de-Celular
 /banco de dados/" na seguinte ordem: "Script_Criação.sql", "Script_Povoamento.sql" e "Script_Manipulação_Segurança.sql".  
 2. Inserir no arquivo "application.properties" localizado no caminho "ProjetoFinal/src/main/resources
-/application.properties" os dados para conexão com o banco de dados, "user" e "password".  
+/application.properties" os dados para conexão com o banco de dados, "root" e "password".  
 3. Fazer o Build do Projeto.
 4. Executar o Projeto.
 5. Acessar via browser no endereço "http://localhost:8080/" 
