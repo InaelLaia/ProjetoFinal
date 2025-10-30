@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Fornecedores</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Gerenciar Fornecedores</h1>
+        </header>
+        
+        <main class="main-content">
+            <div class="selection-area select-center">
+                <select id="fornecedor" name="fornecedor">
+                    <option value="" selected disabled>Selecione um fornecedor</option>
+                    <option th:each="fornecedor : ${fornecedores}" 
+                            th:value="${fornecedor}" 
+                            th:text="${fornecedor}">
+                    </option>
+                </select>
+            </div>
+            
+            <div class="table-container">
+                <table id="tabela-produtos">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Marca</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="selection-area">
+                <select id="produto" name="produto" disabled>
+                    <option value="" selected disabled>Selecione um produto</option>
+                </select>
+                <button id="btn-adicionar" class="btn btn-primary" disabled>ADICIONAR</button>
+            </div>
+            
+            <div class="button-group">
+                <a th:href="@{/}" class="btn btn-secondary">VOLTAR</a>
+                <button id="btn-excluir" class="btn btn-danger" disabled>EXCLUIR</button>
+            </div>
+        </main>
+    </div>
+    
+    <script th:src="@{/js/fornecedor.js}"></script>
+</body>
+</html>

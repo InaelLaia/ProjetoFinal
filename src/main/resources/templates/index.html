@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gerenciamento</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto; 
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        #tabela-movimentacoes thead {
+            position: sticky;
+            top: 0;
+            background-color: #f2f2f2;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                max-height: 300px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Logo Loja de Celular</h1>
+        </header>
+
+        <main class="main-content">
+            <h2>MOVIMENTAÇÕES</h2>
+
+            <div class="table-container">
+                <table id="tabela-movimentacoes">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Produto</th>
+                            <th>Deposito</th>
+                            <th>Preço</th>
+                            <th>QTD Movimentada</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="mov : ${movimentacoes}">
+                            <td th:text="${mov.id}">1</td>
+                            <td th:text="${mov.produto}">iPhone 13</td>
+                            <td th:text="${mov.deposito}">Depósito Central</td>
+                            <td th:text="'R$ ' + ${#numbers.formatDecimal(mov.preco, 1, 2)}">R$ 4999.99</td>
+                            <td th:text="${mov.quantidade}">10</td>
+                            <td th:text="${mov.tipo}">Entrada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="button-group">
+                <button id="btn-nova" class="btn btn-primary">NOVA</button>
+                <button id="btn-produto" class="btn btn-secondary">PRODUTO</button>
+                <button id="btn-fornecedor" class="btn btn-secondary">FORNECEDOR</button>
+                <button id="btn-deposito" class="btn btn-secondary">DEPOSITO</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

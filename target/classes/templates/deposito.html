@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Depósitos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Gerenciar Depósitos</h1>
+        </header>
+        
+        <main class="main-content">
+            <div class="selection-area">
+                <a th:href="@{/deposito/adicionar-deposito}" class="btn btn-primary">NOVO</a>
+                <select id="deposito" name="deposito">
+                    <option value="" selected disabled>Selecione um depósito</option>
+                    <option th:each="deposito : ${depositos}" 
+                            th:value="${deposito}" 
+                            th:text="${deposito}">
+                    </option>
+                </select>
+            </div>
+            
+            <div class="table-container">
+                <table id="tabela-produtos">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Ponto de Reposição</th>
+                            <th>Quantidade Atual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="button-group">
+                <a th:href="@{/deposito/adicionar-produto}" class="btn btn-primary">ADICIONAR PRODUTO</a>
+                <a th:href="@{/}" class="btn btn-secondary">VOLTAR</a>
+                <button id="btn-excluir" class="btn btn-danger" disabled>EXCLUIR PRODUTO</button>
+            </div>
+        </main>
+    </div>
+    
+    <script th:src="@{/js/deposito.js}"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produtos ao Depósito</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Adicionar Produtos ao Depósito</h1>
+        </header>
+        
+        <main class="main-content">
+            <form id="form-produto-deposito" th:action="@{/deposito/adicionar-produto}" method="post">
+                <div class="form-group">
+                    <label for="deposito">DEPOSITO:</label>
+                    <select id="deposito" name="deposito" required>
+                        <option value="" selected disabled>Selecione um depósito</option>
+                        <option th:each="deposito : ${depositos}" 
+                                th:value="${deposito}" 
+                                th:text="${deposito}">
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="produto">PRODUTO:</label>
+                    <select id="produto" name="produto" required>
+                        <option value="" selected disabled>Selecione um produto</option>
+                        <option th:each="produto : ${produtos}" 
+                                th:value="${produto}" 
+                                th:text="${produto}">
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ponto-reposicao">PONTO DE REPOSIÇÃO:</label>
+                    <input type="number" id="ponto-reposicao" name="ponto-reposicao" min="0" required>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">SALVAR</button>
+                    <a th:href="@{/}" class="btn btn-secondary">VOLTAR</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="/js/adicionar-produto.js"></script>
+</body>
+</html>
